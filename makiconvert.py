@@ -1,10 +1,15 @@
+import collections
 import glob
+import json
 import os
+import re
 import shutil
 import subprocess
 import sys
 import xml.etree.ElementTree
 import _winreg
+
+#import arcpy
 
 LOCAL_SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -173,11 +178,55 @@ def prepare_images(in_path, out_path):
     make_bmps(out_path)
     make_emfs(out_path)
 
+def get_maki_mapping_for_extension(out_image_dir, extension,
+                                   maki_name_mapping, extra_tag):
+    tag_re = re.compile("-[0-9]+.*")
+    mapping = {}
+    for vector_file in glob.glob(os.path.join(out_image_dir,
+                                 "*.{}".format(extension))):
+        base_file = os.path.splitext(os.path.basename(vector_file))[0]
+        tags = [extra_tag]
+        fixed_name = base_file
+        for item in tag_re.findall(base_file):
+            fixed_name = fixed_name.replace(item, "")
+            for i, tag in enumerate(item.strip('-').split('-')):
+                if tag.strip():
+                    if i == 0:
+                        tag += "px"
+                    else:
+                        tag = tag.strip().title()
+                    tags.append(tag)
+        if fixed_name in maki_name_mapping:
+            fixed_name = maki_name_mapping[fixed_name]
+        else:
+            fixed_name = fixed_name.replace('-', ' ').title()
+        tag_string = ", ".join(tags)
+        mapping.setdefault(fixed_name, {})[tag_string] = vector_file
+    print mapping
+    return mapping
+
+def make_style_mapping(maki_repo, out_image_dir):
+    maki_json_file = os.path.join(maki_repo, 'www', 'maki.json')
+    maki_json = json.load(open(maki_json_file, 'rb'))
+    maki_icon_to_name_mapping = { item['icon']: item['name']
+                                  for item in maki_json }
+    bmpmap = get_maki_mapping_for_extension(out_image_dir, 'bmp',
+                                            maki_icon_to_name_mapping,
+                                            'Picture')
+    emfmap = get_maki_mapping_for_extension(out_image_dir, 'emf',
+                                            maki_icon_to_name_mapping,
+                                            'Vector')
+
+def make_style_galleries(maki_repo, out_image_dir, out_style_dir):
+    style_mapping = make_style_mapping(maki_repo, out_image_dir)
+
 def make_style_files(maki_repo, out_path):
     make_out_directory_structure(out_path)
     in_image_dir = os.path.join(maki_repo, 'maki-svg')
     out_image_dir = os.path.join(out_path, 'images')
+    out_style_dir = os.path.join(out_path, 'styles')
     prepare_images(in_image_dir, out_image_dir)
+    make_style_galleries(maki_repo, out_image_dir, out_style_dir)
 
 if __name__ == "__main__":
     maki_repo_path = os.path.abspath(os.path.join(LOCAL_SCRIPT_PATH,
