@@ -1,6 +1,6 @@
 """Type library collection cartocomutils"""
 __version__ = '10.2'
-__all__ = ['ArcGISVersion', 'esriSystem', 'esriSystemUI', 'esriGeometry', 'esriGraphicsCore', 'esriGraphicsSymbols', 'esriDisplay', 'esriServer', 'esriOutput', 'esriGeoDatabase', 'esriGeoDatabaseDistributed', 'esriGeoDatabaseExtensions', 'esriGeoDatabasePS', 'esriGISClient', 'esriDataSourcesFile', 'esriDataSourcesGDB', 'esriDataSourcesOleDB', 'esriDataSourcesRaster', 'esriDataSourcesNetCDF', 'esriDataSourcesRasterUI', 'esriCarto']
+__all__ = ['ArcGISVersion', 'esriSystem', 'esriSystemUI', 'esriGeometry', 'esriGraphicsCore', 'esriGraphicsSymbols', 'esriDisplay', 'esriServer', 'esriCarto', 'esriFramework']
 # Required by all submodules, if these get in a bad state the C modules will crash.
 _IIDMap = {}
 _CLSIDMap = {}
@@ -72,16 +72,5 @@ from cartocomutils.esriGraphicsCore import *
 from cartocomutils.esriGraphicsSymbols import *
 from cartocomutils.esriDisplay import *
 from cartocomutils.esriServer import *
-from cartocomutils.esriOutput import *
-from cartocomutils.esriGeoDatabase import *
-from cartocomutils.esriGeoDatabaseDistributed import *
-from cartocomutils.esriGeoDatabaseExtensions import *
-from cartocomutils.esriGeoDatabasePS import *
-from cartocomutils.esriGISClient import *
-from cartocomutils.esriDataSourcesFile import *
-from cartocomutils.esriDataSourcesGDB import *
-from cartocomutils.esriDataSourcesOleDB import *
-from cartocomutils.esriDataSourcesRaster import *
-from cartocomutils.esriDataSourcesNetCDF import *
-from cartocomutils.esriDataSourcesRasterUI import *
 from cartocomutils.esriCarto import *
+from cartocomutils.esriFramework import *

@@ -26772,12 +26772,6 @@ class IViewRefresh(_esriCarto.IViewRefresh):
 
 class IInvalidArea2(_esriCarto.IInvalidArea2):
     _IID = uuid.UUID('fcd50e05-696b-49a5-8872-2f43453fcd2f')
-
-    def __init__(self, *args, **kw):
-        super(IInvalidArea2, self).__init__(*args)
-        for k, a in kw.iteritems():
-            setattr(self, k, a)
-
     def AddFeature(self, Feature, Symbol):
         '''Method IInvalidArea2.AddFeature
 
@@ -26785,40 +26779,9 @@ class IInvalidArea2(_esriCarto.IInvalidArea2):
             Feature             : IFeature*
             Symbol              : ISymbol*'''
         return super(IInvalidArea2, self).AddFeature(Feature, Symbol)
-    def get_Display(self):
-        '''Method IInvalidArea.get_Display (from IInvalidArea)
-
-           OUTPUT
-            dpy                 : IScreenDisplay**'''
-        return super(IInvalidArea2, self).get_Display()
-    def putref_Display(self, dpy):
-        '''Method IInvalidArea.putref_Display (from IInvalidArea)
-
-           INPUT
-            dpy                 : IScreenDisplay*'''
-        return super(IInvalidArea2, self).putref_Display(dpy)
-    def Add(self, thing):
-        '''Method IInvalidArea.Add (from IInvalidArea)
-
-           INPUT
-            thing               : IUnknown*'''
-        return super(IInvalidArea2, self).Add(thing)
-    def Invalidate(self, screenCache):
-        '''Method IInvalidArea.Invalidate (from IInvalidArea)
-
-           INPUT
-            screenCache         : short'''
-        return super(IInvalidArea2, self).Invalidate(screenCache)
-    Display = property(get_Display, putref_Display, None)
 
 class IInvalidArea3(_esriCarto.IInvalidArea3):
     _IID = uuid.UUID('34ddb0ec-4d41-4747-9507-d32abe9feee8')
-
-    def __init__(self, *args, **kw):
-        super(IInvalidArea3, self).__init__(*args)
-        for k, a in kw.iteritems():
-            setattr(self, k, a)
-
     def InvalidateEx(self, screenCache, symSizePoints):
         '''Method IInvalidArea3.InvalidateEx
 
@@ -26833,31 +26796,6 @@ class IInvalidArea3(_esriCarto.IInvalidArea3):
             Feature             : IFeature*
             Symbol              : ISymbol*'''
         return super(IInvalidArea3, self).AddFeature(Feature, Symbol)
-    def get_Display(self):
-        '''Method IInvalidArea.get_Display (from IInvalidArea)
-
-           OUTPUT
-            dpy                 : IScreenDisplay**'''
-        return super(IInvalidArea3, self).get_Display()
-    def putref_Display(self, dpy):
-        '''Method IInvalidArea.putref_Display (from IInvalidArea)
-
-           INPUT
-            dpy                 : IScreenDisplay*'''
-        return super(IInvalidArea3, self).putref_Display(dpy)
-    def Add(self, thing):
-        '''Method IInvalidArea.Add (from IInvalidArea)
-
-           INPUT
-            thing               : IUnknown*'''
-        return super(IInvalidArea3, self).Add(thing)
-    def Invalidate(self, screenCache):
-        '''Method IInvalidArea.Invalidate (from IInvalidArea)
-
-           INPUT
-            screenCache         : short'''
-        return super(IInvalidArea3, self).Invalidate(screenCache)
-    Display = property(get_Display, putref_Display, None)
 
 class ITableFactory(_esriCarto.ITableFactory):
     _IID = uuid.UUID('7e8f8cbf-0dd6-47e1-bbb8-b049a6ec0267')

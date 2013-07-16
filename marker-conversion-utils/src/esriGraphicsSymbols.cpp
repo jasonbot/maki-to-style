@@ -12,19 +12,8 @@
 #import "esriGraphicsSymbols.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
 #import "esriDisplay.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
 #import "esriServer.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
-#import "esriOutput.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
-#import "esriGeoDatabase.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
-#import "esriGeoDatabaseDistributed.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
-#import "esriGeoDatabaseExtensions.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
-#import "esriGeoDatabasePS.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
-#import "esriGISClient.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
-#import "esriDataSourcesFile.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
-#import "esriDataSourcesGDB.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
-#import "esriDataSourcesOleDB.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
-#import "esriDataSourcesRaster.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
-#import "esriDataSourcesNetCDF.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
-#import "esriDataSourcesRasterUI.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
 #import "esriCarto.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids, exclude("UINT_PTR")
+#import "esriFramework.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids, exclude("UINT_PTR")
 
 
 // Globals we need to keep around -- a reference to the UUID class for mapping
