@@ -9,15 +9,22 @@ import sys
 import xml.etree.ElementTree
 import _winreg
 
-#import arcpy
+import arcpy
+
+import cartocomutils
 
 LOCAL_SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 
-# Hardcode to a path string to convert.exe if the detection
-# routines aren't working for you.
+# Skip the production of picture or vector by setting either flag to True
+SKIP_BMPS = False
+SKIP_EMFS = False
+
+# Hardcode to a path string to convert.exe if the detection routines aren't
+# working for you.
 IMAGEMAGICK_PATH = None
-# Hardcode to a path string to inkscape.com (*not* .exe) if the
-# detection routines aren't working for you.
+
+# Hardcode to a path string to inkscape.com (*not* .exe) if the detection
+# routines aren't working for you.
 INKSCAPE_PATH = None
 
 def make_out_directory_structure(out_dir):
@@ -53,34 +60,32 @@ def copy_svgs(in_path, out_path):
     print "    {: <70}".format(success_string)
 
 def make_outline_file(svg_file, out_file):
-    if not os.path.isfile(out_file):
-        with open(svg_file, 'rb') as in_xml, \
-             open(out_file, 'wb') as out_xml:
-            tree = xml.etree.ElementTree.parse(in_xml)
-            paths = tree.findall(".//{http://www.w3.org/2000/svg}path")
-            for path in paths:
-                if 'style' in path.attrib:
-                    style = path.attrib['style']
-                    for old, new in (("fill:#444444;",
-                                      "fill:none;"),
-                                     ("fill-opacity:1;",
-                                      "fill-opacity:0;"),
-                                     ("stroke:none;",
-                                      "stroke:#000000;stroke-width:1;")):
-                        style = style.replace(old, new)
-                    path.attrib['style'] = style
-            tree.write(out_xml)
+    with open(svg_file, 'rb') as in_xml, \
+         open(out_file, 'wb') as out_xml:
+        tree = xml.etree.ElementTree.parse(in_xml)
+        paths = tree.findall(".//{http://www.w3.org/2000/svg}path")
+        for path in paths:
+            if 'style' in path.attrib:
+                style = path.attrib['style']
+                for old, new in (("fill:#444444;",
+                                  "fill:none;"),
+                                 ("fill-opacity:1;",
+                                  "fill-opacity:0;"),
+                                 ("stroke:none;",
+                                  "stroke:#000000;stroke-width:1;")):
+                    style = style.replace(old, new)
+                path.attrib['style'] = style
+        tree.write(out_xml)
 
 def make_outlines(svg_list):
     print "Making SVG outlines..."
     for svg_file in svg_list:
         copy_file = os.path.splitext(svg_file)[0] + "-outline.svg"
         base_svg = os.path.basename(copy_file)
-        sys.stdout.write("    [   ] {: <65}\r".format(base_svg))
-        sys.stdout.flush()
-        make_outline_file(svg_file, copy_file)
-        sys.stdout.write("    [ . ] {: <65}\r".format(base_svg))
-        sys.stdout.flush()
+        if not os.path.isfile(copy_file):
+            sys.stdout.write("    [   ] {: <65}\r".format(base_svg))
+            sys.stdout.flush()
+            make_outline_file(svg_file, copy_file)
     print "    {: <70}".format("[ * ] SVG outlines created")
 
 def prepare_svgs(in_path, out_path):
@@ -113,6 +118,8 @@ def find_imagemagick():
     raise IOError("Could not find ImageMagick installation.")
 
 def make_bmps(bmp_path):
+    if SKIP_BMPS:
+        return
     print "Making BMP marker files..."
     imgmagick_exe = find_imagemagick()
     #print "Imagemagick executable path: {}".format(imgmagick_exe)
@@ -151,6 +158,8 @@ def find_inkscape():
     raise IOError("Could not find Inkscape installation.")
 
 def make_emfs(emf_path):
+    if SKIP_EMFS:
+        return
     old_dir = os.getcwd()
     os.chdir(emf_path)
     try:
@@ -202,7 +211,6 @@ def get_maki_mapping_for_extension(out_image_dir, extension,
             fixed_name = fixed_name.replace('-', ' ').title()
         tag_string = ", ".join(tags)
         mapping.setdefault(fixed_name, {})[tag_string] = vector_file
-    print mapping
     return mapping
 
 def make_style_mapping(maki_repo, out_image_dir):
@@ -210,15 +218,22 @@ def make_style_mapping(maki_repo, out_image_dir):
     maki_json = json.load(open(maki_json_file, 'rb'))
     maki_icon_to_name_mapping = { item['icon']: item['name']
                                   for item in maki_json }
+    mapping = {}
     bmpmap = get_maki_mapping_for_extension(out_image_dir, 'bmp',
                                             maki_icon_to_name_mapping,
                                             'Picture')
     emfmap = get_maki_mapping_for_extension(out_image_dir, 'emf',
                                             maki_icon_to_name_mapping,
                                             'Vector')
+    # Merge dictionaries
+    for item_dict in (bmpmap, emfmap):
+        for item, type_dict in item_dict.items():
+            mapping.setdefault(item, {}).update(type_dict)
+    return mapping
 
 def make_style_galleries(maki_repo, out_image_dir, out_style_dir):
     style_mapping = make_style_mapping(maki_repo, out_image_dir)
+    
 
 def make_style_files(maki_repo, out_path):
     make_out_directory_structure(out_path)
