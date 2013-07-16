@@ -233,7 +233,10 @@ def make_style_mapping(maki_repo, out_image_dir):
 
 def make_style_galleries(maki_repo, out_image_dir, out_style_dir):
     style_mapping = make_style_mapping(maki_repo, out_image_dir)
-    
+    out_files = ["maki.style", "maki.ServerStyle"]
+    for file in out_files:
+        out_gallery = os.path.join(out_style_dir, file)
+        make_gallery_file(style_mapping, out_gallery)
 
 def make_style_files(maki_repo, out_path):
     make_out_directory_structure(out_path)
