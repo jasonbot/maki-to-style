@@ -4,16 +4,18 @@
 #include "datetime.h"
 
 // imports
-#import "ArcGISVersion.dll" raw_interfaces_only, raw_native_types, no_namespace, named_guids, rename("esriProductCode", "esriVersionProductCode"), rename("VersionManager", "ArcGISVersionManager")
-#import "esriSystem.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids, exclude("OLE_COLOR", "OLE_HANDLE", "VARTYPE")
-#import "esriSystemUI.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
-#import "esriGeometry.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
-#import "esriGraphicsCore.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
-#import "esriGraphicsSymbols.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
-#import "esriDisplay.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
-#import "esriServer.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
-#import "esriCarto.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids, exclude("UINT_PTR")
-#import "esriFramework.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids, exclude("UINT_PTR")
+#import "c:\Program Files (x86)\Common Files\ArcGIS\bin\ArcGISVersion.dll" raw_interfaces_only, raw_native_types, no_namespace, named_guids, rename("esriProductCode", "esriVersionProductCode"), rename("VersionManager", "ArcGISVersionManager")
+#import "C:\Program Files (x86)\ArcGIS\Desktop10.2\com\esriSystem.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids, exclude("OLE_COLOR", "OLE_HANDLE", "VARTYPE")
+#import "C:\Program Files (x86)\ArcGIS\Desktop10.2\com\esriSystemUI.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
+#import "C:\Program Files (x86)\ArcGIS\Desktop10.2\com\esriGeometry.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
+#import "C:\Program Files (x86)\ArcGIS\Desktop10.2\com\esriGraphicsCore.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
+#import "C:\Program Files (x86)\ArcGIS\Desktop10.2\com\esriGraphicsSymbols.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
+#import "C:\Program Files (x86)\ArcGIS\Desktop10.2\com\esriDisplay.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
+#import "C:\Program Files (x86)\ArcGIS\Desktop10.2\com\esriServer.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
+#import "C:\Program Files (x86)\ArcGIS\Desktop10.2\com\esriGeoDatabase.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
+#import "C:\Program Files (x86)\ArcGIS\Desktop10.2\com\esriGISClient.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids
+#import "C:\Program Files (x86)\ArcGIS\Desktop10.2\com\esriCarto.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids, exclude("UINT_PTR")
+#import "C:\Program Files (x86)\ArcGIS\Desktop10.2\com\esriFramework.olb" raw_interfaces_only, raw_native_types, no_namespace, named_guids, exclude("UINT_PTR")
 
 
 // Globals we need to keep around -- a reference to the UUID class for mapping

@@ -1,6 +1,6 @@
 """Type library collection cartocomutils"""
 __version__ = '10.2'
-__all__ = ['ArcGISVersion', 'esriSystem', 'esriSystemUI', 'esriGeometry', 'esriGraphicsCore', 'esriGraphicsSymbols', 'esriDisplay', 'esriServer', 'esriCarto', 'esriFramework']
+__all__ = ['ArcGISVersion', 'esriSystem', 'esriSystemUI', 'esriGeometry', 'esriGraphicsCore', 'esriGraphicsSymbols', 'esriDisplay', 'esriServer', 'esriGeoDatabase', 'esriGISClient', 'esriCarto', 'esriFramework']
 # Required by all submodules, if these get in a bad state the C modules will crash.
 _IIDMap = {}
 _CLSIDMap = {}
@@ -72,5 +72,7 @@ from cartocomutils.esriGraphicsCore import *
 from cartocomutils.esriGraphicsSymbols import *
 from cartocomutils.esriDisplay import *
 from cartocomutils.esriServer import *
+from cartocomutils.esriGeoDatabase import *
+from cartocomutils.esriGISClient import *
 from cartocomutils.esriCarto import *
 from cartocomutils.esriFramework import *
