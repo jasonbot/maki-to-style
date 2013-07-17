@@ -282,10 +282,7 @@ def make_style_galleries(maki_repo, out_image_dir, out_style_dir):
         out_gallery = os.path.join(out_style_dir, file)
         if os.path.isfile(out_gallery):
             os.unlink(out_gallery)
-        maki_gallery_file = os.path.join(maki_repo, 'ArcGIS', file)
         make_gallery_file(style_mapping, out_gallery)
-        if os.path.isfile(out_gallery):
-            shutil.copyfile(out_gallery, maki_gallery_file)
 
 def make_style_files(maki_repo, out_path):
     make_out_directory_structure(out_path)
