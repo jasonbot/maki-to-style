@@ -231,6 +231,14 @@ def make_style_mapping(maki_repo, out_image_dir):
             mapping.setdefault(item, {}).update(type_dict)
     return mapping
 
+def make_gallery_file(style_mapping, out_gallery):
+    os.path.splitext(out_gallery)[1].lower() == ".serverstyle":
+        gallery_clsid = cartocomutils.CLSID_ServerStyleGallery
+        item_clsid = cartocomutils.CLSID_ServerStyleGalleryItem
+    else:
+        gallery_clsid =
+        item_clsid = 
+
 def make_style_galleries(maki_repo, out_image_dir, out_style_dir):
     style_mapping = make_style_mapping(maki_repo, out_image_dir)
     out_files = ["maki.style", "maki.ServerStyle"]
