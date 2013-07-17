@@ -275,7 +275,7 @@ def make_gallery_file(style_mapping, out_gallery):
     print "    [ * ] {: <65}\r".format(out_gallery)
 
 def make_style_galleries(maki_repo, out_image_dir, out_style_dir):
-    print"Making style gallery files..."
+    print "Making style gallery files..."
     style_mapping = make_style_mapping(maki_repo, out_image_dir)
     out_files = ["maki.style", "maki.ServerStyle"]
     for file in out_files:
