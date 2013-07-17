@@ -231,6 +231,21 @@ def make_style_mapping(maki_repo, out_image_dir):
             mapping.setdefault(item, {}).update(type_dict)
     return mapping
 
+def make_picture_marker(file_path, size):
+    color = cartocomutils.IRgbColor(cartocomutils.CLSID_RgbColor)
+    color.Red, color.Green, color.Blue = (255, 255, 255)
+    extension = os.path.splitext(file_path)[1].lower()
+    if extension == ".emf":
+        import_type = cartocomutils.esriIPictureType.esriIPictureEMF
+    else:
+        import_type = cartocomutils.esriIPictureType.esriIPictureBitmap
+    picturemarker = cartocomutils.IPictureMarkerSymbol(
+                            cartocomutils.CLSID_PictureMarkerSymbol)
+    picturemarker.CreateMarkerSymbolFromFile(import_type, file_path)
+    picturemarker.BitmapTransparencyColor = color
+    picturemarker.Size = size
+    return picturemarker
+
 def make_gallery_file(style_mapping, out_gallery):
     if os.path.splitext(out_gallery)[1].lower() == ".serverstyle":
         gallery_clsid = cartocomutils.CLSID_ServerStyleGallery
@@ -238,8 +253,29 @@ def make_gallery_file(style_mapping, out_gallery):
     else:
         gallery_clsid = cartocomutils.CLSID_StyleGallery
         item_clsid = cartocomutils.CLSID_StyleGalleryItem
+    size_re = re.compile("([0-9]+)px")
+    style_gallery = cartocomutils.IStyleGallery(gallery_clsid)
+    style_io = cartocomutils.IStyleGalleryStorage(style_gallery)
+    style_io.TargetFile = out_gallery
+    for item_name, item_dict in style_mapping.iteritems():
+        for item_format, item_file in item_dict.iteritems():
+            print_string = "{}: {}".format(item_name,
+                                           item_format)
+            sys.stdout.write("    [   ] {: <65}\r".format(print_string))
+            sys.stdout.flush()
+            styleitem = cartocomutils.IStyleGalleryItem(item_clsid)
+            item_size = 24
+            for item in size_re.findall(item_format):
+                item_size = int(item)
+            picture_marker = make_picture_marker(item_file, item_size)
+            styleitem.Category = item_format
+            styleitem.Item = picture_marker
+            styleitem.Name = item_name
+            style_gallery.AddItem(styleitem)
+    print "    [ * ] {: <65}\r".format(out_gallery)
 
 def make_style_galleries(maki_repo, out_image_dir, out_style_dir):
+    print"Making style gallery files..."
     style_mapping = make_style_mapping(maki_repo, out_image_dir)
     out_files = ["maki.style", "maki.ServerStyle"]
     for file in out_files:
