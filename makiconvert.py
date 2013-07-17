@@ -270,7 +270,7 @@ def make_gallery_file(style_mapping, out_gallery):
             picture_marker = make_picture_marker(item_file, item_size)
             styleitem.Category = item_format
             styleitem.Item = picture_marker
-            styleitem.Name = item_name
+            styleitem.Name = "{} ({})".format(item_name, item_format)
             style_gallery.AddItem(styleitem)
     print "    [ * ] {: <65}\r".format(out_gallery)
 
@@ -280,7 +280,12 @@ def make_style_galleries(maki_repo, out_image_dir, out_style_dir):
     out_files = ["maki.style", "maki.ServerStyle"]
     for file in out_files:
         out_gallery = os.path.join(out_style_dir, file)
+        if os.path.isfile(out_gallery):
+            os.unlink(out_gallery)
+        maki_gallery_file = os.path.join(maki_repo, 'ArcGIS', file)
         make_gallery_file(style_mapping, out_gallery)
+        if os.path.isfile(out_gallery):
+            shutil.copyfile(out_gallery, maki_gallery_file)
 
 def make_style_files(maki_repo, out_path):
     make_out_directory_structure(out_path)
