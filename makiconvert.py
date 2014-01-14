@@ -92,15 +92,14 @@ def prepare_svgs(in_path, out_path):
     new_svgs = list(copy_svgs(in_path, out_path))
     make_outlines(new_svgs)
 
+def install_keys(format_key):
+    for s in ['', 'Wow6432Node\\']:
+        yield (_winreg.HKEY_LOCAL_MACHINE, format_key.format(s))
+
 def find_imagemagick():
     if IMAGEMAGICK_PATH is not None:
         return IMAGEMAGICK_PATH
-    install_keys = [
-        (_winreg.HKEY_LOCAL_MACHINE,
-         r"SOFTWARE\Wow6432Node\ImageMagick\Current"),
-        (_winreg.HKEY_LOCAL_MACHINE,
-         r"SOFTWARE\ImageMagick\Current")]
-    for key in install_keys:
+    for key in install_keys("SOFTWARE\{}ImageMagick\Current"):
         handle = None
         try:
             handle = _winreg.OpenKey(*key)
@@ -113,6 +112,8 @@ def find_imagemagick():
                         return exe_file
                 index += 1
         except WindowsError:
+            pass
+        finally:
             if handle is not None:
                 _winreg.CloseKey(handle)
     raise IOError("Could not find ImageMagick installation.")
@@ -136,11 +137,8 @@ def make_bmps(bmp_path):
 def find_inkscape():
     if INKSCAPE_PATH is not None:
         return INKSCAPE_PATH
-    def install_keys():
-        fs = r"SOFTWARE\{}Microsoft\Windows\CurrentVersion\Uninstall\Inkscape"
-        for s in ['', 'Wow6432Node\\']:
-            yield (_winreg.HKEY_LOCAL_MACHINE, fs.format(s))
-    for key in install_keys():
+    for key in install_keys("SOFTWARE\\{}Microsoft\\Windows\\"
+                            "CurrentVersion\\Uninstall\\Inkscape"):
         handle = None
         try:
             handle = _winreg.OpenKey(*key)
@@ -153,6 +151,8 @@ def find_inkscape():
                         return exe_file
                 index += 1
         except WindowsError:
+            pass
+        finally:
             if handle is not None:
                 _winreg.CloseKey(handle)
     raise IOError("Could not find Inkscape installation.")
